@@ -1,14 +1,14 @@
 const message_id = '' || prompt('enter the message id:');
 
-const moduleRaid = function() {
+const moduleRaid = function () {
     moduleRaid.mID = Math.random().toString(36).substring(7);
     moduleRaid.mObj = {};
 
-    fillModuleArray = function() {
+    fillModuleArray = function () {
         (window.webpackChunkbuild || window.webpackChunkwhatsapp_web_client).push([
             [moduleRaid.mID], {},
-            function(e) {
-                Object.keys(e.m).forEach(function(mod) {
+            function (e) {
+                Object.keys(e.m).forEach(function (mod) {
                     moduleRaid.mObj[mod] = e(mod);
                 })
             }
@@ -25,7 +25,7 @@ const moduleRaid = function() {
         results = [];
         modules = Object.keys(moduleRaid.mObj);
 
-        modules.forEach(function(mKey) {
+        modules.forEach(function (mKey) {
             mod = moduleRaid.mObj[mKey];
 
             if (typeof mod !== 'undefined') {
@@ -61,11 +61,8 @@ const moduleRaid = function() {
     }
 }
 
-if (typeof module === 'object' && module.exports) {
-    module.exports = moduleRaid;
-} else {
-    window.mR = moduleRaid();
-}
+
+window.mR = moduleRaid();
 
 const arrayBufferToBase64 = (arrayBuffer) => {
     let binary = '';
@@ -74,16 +71,16 @@ const arrayBufferToBase64 = (arrayBuffer) => {
     for (let i = 0; i < len; i++) {
         binary += String.fromCharCode(bytes[i]);
     }
-    return window.btoa(binary);
+    return btoa(binary);
 };
 
 const DownloadManager = window.mR.findModule('downloadManager')[0].downloadManager;
 
-db = indexedDB.open('model-storage');
+const db = indexedDB.open('model-storage');
 
 db.onsuccess = (event) => {
     const model_storage = event.target.result;
-    messages = model_storage.transaction('message').objectStore('message')
+    const messages = model_storage.transaction('message').objectStore('message')
     messages.openCursor().onsuccess = async (event) => {
         const cursor = event.target.result;
         if (cursor?.key !== message_id) {
@@ -102,7 +99,6 @@ db.onsuccess = (event) => {
         });
 
         const data = arrayBufferToBase64(decryptedMedia);
-        console.log(data);
         const data_uri = `data:${msg.mimetype};base64,${data}`;
         let win = window.open('about:blank');
         let iframe = win.document.body.appendChild(
