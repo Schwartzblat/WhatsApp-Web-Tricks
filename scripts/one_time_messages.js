@@ -80,14 +80,9 @@ const db = indexedDB.open('model-storage');
 
 db.onsuccess = (event) => {
     const model_storage = event.target.result;
-    const messages = model_storage.transaction('message').objectStore('message')
-    messages.openCursor().onsuccess = async (event) => {
-        const cursor = event.target.result;
-        if (cursor?.key !== message_id) {
-            cursor.continue();
-            return;
-        }
-        const msg = cursor.value;
+    const request = model_storage.transaction('message').objectStore('message').get(message_id);
+    request.onsuccess = async (event) => {
+        const msg = event.target.result;
         const decryptedMedia = await DownloadManager.downloadAndMaybeDecrypt({
             directPath: msg.directPath,
             encFilehash: msg.encFilehash,
@@ -107,5 +102,5 @@ db.onsuccess = (event) => {
         iframe.src = data_uri;
         iframe.width = '100%';
         iframe.height = '100%';
-    };
+    }
 };
