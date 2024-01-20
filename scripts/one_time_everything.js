@@ -23,6 +23,5 @@ db.onsuccess = (event) => {
                 };
             }
         }
-        window.location.reload();
     }
 }
