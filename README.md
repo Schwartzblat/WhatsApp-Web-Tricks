@@ -2,8 +2,9 @@
 
 ## Current features:
 
-### 1. Open in new tab and download one time view media
-### 2. Convert all the one time media to regular media
+### 1. Open in new tab and download one time view media.
+### 2. Convert all the one time media to regular media.
+### 3. Unlock locked chats.
 
 ## How to use:
 
